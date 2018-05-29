@@ -2,7 +2,6 @@
 var mongo = require('mongodb');
 
 var conMongoDB = function() {
-	var _db = null;
 
 	return new Promise(function(resolve, reject) {
 
