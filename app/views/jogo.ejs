@@ -29,6 +29,9 @@
 					method: 'get',
 					success: function(result){
 						$('#acoes').html(result);
+
+						clearTimeout(timerId);
+						cronometro();
 					}
 				});
 			});
@@ -46,6 +49,26 @@
 				});
 			});
 		});
+
+		var timerId = null;
+
+		function cronometro() {
+			$('.tempo_restante').each(function(){
+				var segundos = $(this).html();
+				var segundos_atuais = parseInt(segundos) - 1;
+
+				if(segundos_atuais < 0) {
+					window.location.href = "/jogo?msg=Uma acao foi finalizada!";
+				}
+				else {
+					$(this).html(segundos_atuais);
+				}
+				
+			});
+
+			timerId = setTimeout('cronometro()', 1000);
+		}
+
 	</script>
 
 </head>
@@ -63,9 +86,9 @@
 	<div class="container">
 
 		<% if (msg !== '' && msg != undefined) { %>
-			<div class="alert alert-danger" id="msgErros">
-				<strong><%=msg%></strong>
-			</div>
+		<div class="alert alert-danger" id="msgErros">
+			<strong><%=msg%></strong>
+		</div>
 		<% } %>
 
 		<div class="row">
@@ -126,7 +149,7 @@
 
 				<div class="col-sm-2">
 					<img src="images/outros/moeda.jpg" title="Moeda" alt="Moeda"/>
-					<span><%=jogo.moedas%></span>
+					<span><%=jogo.moeda%></span>
 				</div>
 
 			</div>

@@ -37,7 +37,12 @@ module.exports.pergaminhos = function(application, req, res) {
 		return;
 	}
 
-	res.render('pergaminhos');
+	var connection = application.config.dbConnection; 
+	var JogoDAO = new application.app.models.JogoDAO(connection);
+
+	var usuario = req.session.usuario;
+
+	JogoDAO.getAcoes(usuario, res);
 }
 
 module.exports.ordenar_acao_sudito = function(application, req, res) {
@@ -66,4 +71,15 @@ module.exports.ordenar_acao_sudito = function(application, req, res) {
 	JogoDAO.acao(dadosForm);
 
 	res.redirect('jogo?msg=Ordenação efetuada com sucesso');
+}
+
+module.exports.revogar_ordem = function(application, req, res) {
+	var url_query = req.query;
+
+	var connection = application.config.dbConnection; 
+	var JogoDAO = new application.app.models.JogoDAO(connection);
+
+	var _id = url_query.id_acao;
+	JogoDAO.revogarOrdem(_id, res);
+
 }
